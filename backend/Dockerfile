@@ -1,23 +1,17 @@
 FROM node:20-alpine AS builder
 
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
-
-COPY tsconfig.json ./
-COPY src ./src
-RUN npm run build
-
-# ---
+WORKDIR /builder
+COPY . .
+RUN npm pkg delete scripts.prepare \
+&& npm ci --no-audit --unsafe-perm  \
+&& npm run build \
+&& npm ci --omit=dev && npm cache clean --force
 
 FROM node:20-alpine
-
 WORKDIR /app
-COPY package*.json ./
-RUN npm ci --omit=dev
-
-COPY --from=builder /app/dist ./dist
-
-EXPOSE 4000
+COPY --from=builder --chown=node:node /builder/dist ./dist
+COPY --from=builder --chown=node:node /builder/node_modules ./node_modules
+RUN chown node:node /app
+USER node
 
 CMD ["node", "dist/index.js"]

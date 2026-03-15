@@ -66,7 +66,7 @@ services:
     # tty: true
     ports:
       - "4000:4000"
-    command: 'npm run dev'
+    # command: 'npm run dev'
     depends_on:
       - keycloak
       - olap_db
@@ -88,6 +88,6 @@ services:
     # tty: true
     ports:
       - "3000:3000"
-    command: "npm run start"
+    # command: "npm run start"
     depends_on:
       - backend
