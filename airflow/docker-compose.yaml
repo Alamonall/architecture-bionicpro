@@ -19,6 +19,7 @@ x-airflow-common: &airflow-common
     - ./dags/sql:/opt/airflow/dags/sql
     - ./requirements.txt:/opt/airflow/requirements.txt
     - ./data:/opt/airflow/sample_files
+    - ./connections.yaml:/opt/airflow/connections.yaml
   user: "${AIRFLOW_UID:-50000}:0"
   depends_on: &airflow-common-depends-on
     postgres:
@@ -129,9 +130,11 @@ services:
       postgres:
         condition: service_healthy
     command: >
-      bash -c " airflow db init && airflow users create \ --username admin \ --firstname admin \ --lastname admin \ --role Admin \ --email admin@sample.ru \ --password admin 
-      
-      "
+       bash -c "
+        airflow db init &&
+         airflow users create --username admin --firstname admin --lastname admin --role Admin --email admin@sample.ru --password admin &&
+         airflow connections import /opt/airflow/connections.yaml
+       "
     networks:
       - dag_sample
 

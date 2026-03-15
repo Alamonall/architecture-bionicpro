@@ -1,0 +1,15 @@
+write_to_postgres:
+  conn_type: postgres
+  host: postgres
+  schema: sample
+  login: airflow
+  password: airflow
+  port: 5432
+
+olap:
+  conn_type: postgres
+  host: postgres
+  schema: olap
+  login: airflow
+  password: airflow
+  port: 5432

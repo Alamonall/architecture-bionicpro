@@ -3,7 +3,11 @@
 -- =============================================================================
 
 CREATE DATABASE sample;
+CREATE DATABASE olap;
 GRANT ALL PRIVILEGES ON DATABASE sample TO airflow;
+GRANT ALL PRIVILEGES ON DATABASE olap TO airflow;
+
+\connect sample
 
 -- =============================================================================
 -- CRM: таблица клиентов
